@@ -5,6 +5,7 @@ using UnityEngine;
 public class Fly : MonoBehaviour
 {
     private bool ismoving;
+    private const float arrowSpeed = 0.3f;
     void Start()
     {
         ismoving = true;
@@ -13,7 +14,7 @@ public class Fly : MonoBehaviour
     void Update()
     {
         if(ismoving)
-        transform.position +=  0.5f*transform.right;
+        transform.position +=  transform.right * arrowSpeed;
         StartCoroutine(Destroy());
     }
     IEnumerator Destroy()

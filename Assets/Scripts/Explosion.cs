@@ -14,28 +14,31 @@ public class Explosion : MonoBehaviour
     private float countdown;
     private int explodeRange;
 
+    private new Sound audio;
     private void Start()
     {
-
         backgroundTiles = GameObject.Find("Background").GetComponent<Tilemap>();
         obstacleTiles = GameObject.Find("Obstacles").GetComponent<Tilemap>();
         countdown = 3f;
         explodeRange = 10;
+        audio = GameObject.Find("Manager").GetComponent<Sound>();
         StartCoroutine(Countdown());
+
     }
     // wait countdown seconds and that explode
     IEnumerator Countdown()
     {
         yield return new WaitForSeconds(countdown);
         GetT();
+        audio.PlaySound("explode");
         Handheld.Vibrate();
         Destroy(gameObject);
     }
     // check all directions where can explode
     void GetT()
     {
-        Vector3 mp = transform.position;
-        location = backgroundTiles.WorldToCell(mp);
+        Vector3 bombPos = transform.position;
+        location = backgroundTiles.WorldToCell(bombPos);
         for (int i = 0; i <explodeRange; i++)
         {
             if (backgroundTiles.GetTile(location))
@@ -53,7 +56,7 @@ public class Explosion : MonoBehaviour
             else break;
             location.y++;
         }
-        location = backgroundTiles.WorldToCell(mp);
+        location = backgroundTiles.WorldToCell(bombPos);
         for (int i = 0; i > -explodeRange; i--)
         {
             location.y--;
@@ -71,7 +74,7 @@ public class Explosion : MonoBehaviour
             }
             else break;
         }
-        location = backgroundTiles.WorldToCell(mp);
+        location = backgroundTiles.WorldToCell(bombPos);
         for (int i = 0; i < explodeRange; i++)
         {
             if (backgroundTiles.GetTile(location))
@@ -90,7 +93,7 @@ public class Explosion : MonoBehaviour
             else break;
             location.x++;
         }
-        location = backgroundTiles.WorldToCell(mp);
+        location = backgroundTiles.WorldToCell(bombPos);
         for (int i = 0; i > - explodeRange; i--)
         {
             location.x--;
@@ -108,6 +111,7 @@ public class Explosion : MonoBehaviour
             }
             else break;
         }
+        
     }
 
 }
